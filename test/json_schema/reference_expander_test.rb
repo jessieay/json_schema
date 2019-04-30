@@ -265,6 +265,28 @@ describe JsonSchema::ReferenceExpander do
     assert schema.expanded?
   end
 
+  it "is broken in this state" do
+    sample1 = DataScaffold.schema_1
+    schema1 = JsonSchema::Parser.new.parse!(sample1)
+    # schema1.uri = "http://json-schema.org/draft-04/schema#"
+
+    sample2 = DataScaffold.schema_2
+    schema2 = JsonSchema::Parser.new.parse!(sample2)
+    # schema2.uri = "http://json-schema.org/draft-04/hyper-schema#"
+
+    store = JsonSchema::DocumentStore.new
+    expander = JsonSchema::ReferenceExpander.new
+
+    expander.expand!(schema1, store: store)
+    expander.expand!(schema2, store: store)
+
+    store.add_schema(schema1)
+    store.add_schema(schema2)
+
+    assert schema1.expanded?
+    assert schema2.expanded?
+  end
+
   it "expands a schema with a reference to an external schema with a nested external property reference" do
     sample1 = {
       "$schema" => "http://json-schema.org/draft-04/hyper-schema",

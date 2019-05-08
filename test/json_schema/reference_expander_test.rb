@@ -302,6 +302,24 @@ describe JsonSchema::ReferenceExpander do
     assert schema2.expanded?
   end
 
+  it "is not broken" do
+    sample1 = DataScaffold.schema1
+    schema1 = JsonSchema::Parser.new.parse!(sample1)
+    sample2 = DataScaffold.schema2
+    schema2 = JsonSchema::Parser.new.parse!(sample2)
+
+    store = JsonSchema::DocumentStore.new
+    expander = JsonSchema::ReferenceExpander.new
+
+    store.add_schema(schema1)
+    store.add_schema(schema2)
+
+    expander.expand!(schema2, store: store)
+
+    assert schema1.expanded?
+    assert schema2.expanded?
+  end
+
   it "expands a schema with a nested reference to an external schema in a oneOf array" do
     sample1 = {
       "$schema" => "http://json-schema.org/draft-04/schema#",

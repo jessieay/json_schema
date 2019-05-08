@@ -308,11 +308,7 @@ describe JsonSchema::ReferenceExpander do
       "$schema" => "http://json-schema.org/draft-04/schema#",
       "properties" => {
         "additionalItems" => {
-          "anyOf" => [
-            { "type" => "boolean" },
-            { "$ref" => "#" }
-          ],
-          "default" => {}
+          "anyOf" => [ { "$ref" => "#" } ]
         }
       }
     }
@@ -321,9 +317,7 @@ describe JsonSchema::ReferenceExpander do
       "$schema" => "http://json-schema.org/draft-04/hyper-schema#",
       "id" => "http://json-schema.org/draft-04/hyper-schema#",
       "allOf" => [
-        {
-          "$ref" => "http://json-schema.org/draft-04/schema#"
-        }
+        { "$ref" => "http://json-schema.org/draft-04/schema#" }
       ]
     }
     schema2 = JsonSchema::Parser.new.parse!(sample2)
